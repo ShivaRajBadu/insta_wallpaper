@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:insta_wallpaper/utils/instagram.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:insta_wallpaper/utils/local_storage.dart';
 import 'package:insta_wallpaper/widgets/auth.dart';
 import 'package:insta_wallpaper/widgets/wallpaper_page.dart';
@@ -13,9 +13,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MyWidget(),
+      home: const MyWidget(),
+      builder: EasyLoading.init(),
     );
   }
 }
@@ -28,20 +29,26 @@ class MyWidget extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<MyWidget> {
-  late String? accessToken = '';
-
+  String? accessToken = '';
   @override
-  void initState() {
-    _getAccessToken();
+  initState() {
     super.initState();
+    _getAccessToken().then((value) => setState(() {
+          accessToken = value;
+          print('called here');
+          print(value);
+        }));
   }
 
-  Future<void> _getAccessToken() async {
-    accessToken = await SecureStorage.get(SecureStorageKeys.accessToken);
+  Future<String?> _getAccessToken() async {
+    final token = await SecureStorage.get(SecureStorageKeys.accessToken);
+    return token;
   }
 
   @override
   Widget build(BuildContext context) {
+    print('called build');
+    print(accessToken);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Wallpaper App'),
@@ -50,25 +57,27 @@ class _MyWidgetState extends State<MyWidget> {
       ),
       body: Center(
         child: ElevatedButton(
-            onPressed: () async {
-              // if (accessToken != null) {
-              //   Instagram.getUserMedia(accessToken).then((value) {
-              //     Navigator.push(
-              //         context,
-              //         MaterialPageRoute(
-              //           builder: (context) => WallpaperApp(imageUrls: value),
-              //         ));
-              //   });
-              // } else {
+          onPressed: () async {
+            if (accessToken != null && accessToken!.isNotEmpty) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const WallpaperApp(),
+                ),
+              );
+            } else {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const InstagramAuth(),
                 ),
               );
-              // }
-            },
-            child: const Text('Login with Instagram')),
+            }
+          },
+          child: accessToken == null || accessToken!.isEmpty
+              ? const Text('Login with Instagram')
+              : const Text('Check your photos'),
+        ),
       ),
     );
   }
