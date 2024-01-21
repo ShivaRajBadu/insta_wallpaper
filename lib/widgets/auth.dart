@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:insta_wallpaper/utils/global_state.dart';
+import 'package:insta_wallpaper/state_manager/global_state.dart';
 
 import 'package:insta_wallpaper/utils/instagram.dart';
 import 'package:insta_wallpaper/widgets/progress_bar.dart';

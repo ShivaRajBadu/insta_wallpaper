@@ -1,82 +1,87 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:insta_wallpaper/utils/local_storage.dart';
+import 'package:insta_wallpaper/state_manager/user_state.dart';
 import 'package:insta_wallpaper/widgets/auth.dart';
+import 'package:insta_wallpaper/widgets/insta_auth.dart';
 import 'package:insta_wallpaper/widgets/wallpaper_page.dart';
+import 'package:provider/provider.dart';
+
+final userState = UserState();
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MainApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: const MyWidget(),
-      builder: EasyLoading.init(),
+    return ChangeNotifierProvider.value(
+      value: userState,
+      child: MaterialApp(
+        onGenerateRoute: (settings) {
+          print(settings.name);
+          return null;
+        },
+        debugShowCheckedModeBanner: false,
+        home: const InstaWallpaper(),
+        builder: EasyLoading.init(),
+      ),
     );
   }
 }
 
-class MyWidget extends StatefulWidget {
-  const MyWidget({super.key});
+class InstaWallpaper extends StatefulWidget {
+  const InstaWallpaper({super.key});
 
   @override
-  State<MyWidget> createState() => _MyWidgetState();
+  State<InstaWallpaper> createState() => _InstaWallpaperState();
 }
 
-class _MyWidgetState extends State<MyWidget> {
-  String? accessToken = '';
+class _InstaWallpaperState extends State<InstaWallpaper> {
   @override
-  initState() {
+  void initState() {
     super.initState();
-    _getAccessToken().then((value) => setState(() {
-          accessToken = value;
-          print('called here');
-          print(value);
-        }));
-  }
-
-  Future<String?> _getAccessToken() async {
-    final token = await SecureStorage.get(SecureStorageKeys.accessToken);
-    return token;
   }
 
   @override
   Widget build(BuildContext context) {
-    print('called build');
-    print(accessToken);
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Wallpaper App'),
-        centerTitle: true,
-        elevation: 8,
-      ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () async {
-            if (accessToken != null && accessToken!.isNotEmpty) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const WallpaperApp(),
-                ),
-              );
-            } else {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const InstagramAuth(),
-                ),
-              );
-            }
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Insta Wallpaper'),
+          centerTitle: true,
+          elevation: 10,
+        ),
+        body: Consumer<UserState>(
+          builder: (context, state, child) {
+            return Center(
+              child: ElevatedButton(
+                onPressed: () async {
+                  if (state.accessToken != null &&
+                      state.accessToken!.isNotEmpty) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const WallpaperApp(),
+                      ),
+                    );
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const InstagramAuth(),
+                      ),
+                    );
+                  }
+                },
+                child: state.accessToken == null || state.accessToken!.isEmpty
+                    ? const Text('Login with Instagram')
+                    : const Text('Check your photos'),
+              ),
+            );
           },
-          child: accessToken == null || accessToken!.isEmpty
-              ? const Text('Login with Instagram')
-              : const Text('Check your photos'),
         ),
       ),
     );
