@@ -34,6 +34,7 @@ class Instagram {
         });
     if (response.statusCode == 200) {
       accessToken = json.decode(response.body)['access_token'];
+      UserState().setAccessToken(accessToken);
       await getLongLiveToken();
     }
 
@@ -63,12 +64,12 @@ class Instagram {
 
   static Future<List<Map<String, dynamic>>> getUserMedia(String? token) async {
     var apiUrl = '';
-    if (token != null) {
-      apiUrl =
-          'https://graph.instagram.com/v13.0/me/media?fields=id,media_type,media_url,thumbnail_url,permalink&access_token=$token';
-    } else {
+    if (token == null) {
       apiUrl =
           'https://graph.instagram.com/v13.0/me/media?fields=id,media_type,media_url,thumbnail_url,permalink&access_token=$longlivedAccessToken';
+    } else {
+      apiUrl =
+          'https://graph.instagram.com/v13.0/me/media?fields=id,media_type,media_url,thumbnail_url,permalink&access_token=$token';
     }
 
     final response = await http.get(Uri.parse(apiUrl));

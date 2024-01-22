@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:insta_wallpaper/state_manager/user_state.dart';
-import 'package:insta_wallpaper/widgets/auth.dart';
-import 'package:insta_wallpaper/widgets/insta_auth.dart';
-import 'package:insta_wallpaper/widgets/wallpaper_page.dart';
+import 'package:insta_wallpaper/screens/auth.dart';
+import 'package:insta_wallpaper/screens/wallpaper_page.dart';
 import 'package:provider/provider.dart';
 
 final userState = UserState();
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MainApp());
 }
 
@@ -20,10 +20,6 @@ class MainApp extends StatelessWidget {
     return ChangeNotifierProvider.value(
       value: userState,
       child: MaterialApp(
-        onGenerateRoute: (settings) {
-          print(settings.name);
-          return null;
-        },
         debugShowCheckedModeBanner: false,
         home: const InstaWallpaper(),
         builder: EasyLoading.init(),
@@ -73,7 +69,7 @@ class _InstaWallpaperState extends State<InstaWallpaper> {
                       MaterialPageRoute(
                         builder: (context) => const InstagramAuth(),
                       ),
-                    );
+                    ).then((value) => setState(() {}));
                   }
                 },
                 child: state.accessToken == null || state.accessToken!.isEmpty

@@ -3,7 +3,7 @@ import 'package:insta_wallpaper/state_manager/global_state.dart';
 
 import 'package:insta_wallpaper/utils/instagram.dart';
 import 'package:insta_wallpaper/widgets/progress_bar.dart';
-import 'package:insta_wallpaper/widgets/wallpaper_page.dart';
+import 'package:insta_wallpaper/screens/wallpaper_page.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class InstagramAuth extends StatefulWidget {

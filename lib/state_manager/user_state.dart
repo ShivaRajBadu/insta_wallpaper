@@ -22,11 +22,8 @@ class UserState extends ChangeNotifier {
   }
 
   Future<void> getMedia() async {
-    if (accessToken!.isNotEmpty) {
-      _mediaList = await Instagram.getUserMedia(accessToken);
-    } else {
-      _mediaList = await Instagram.getUserMedia(null);
-    }
+    _mediaList = await Instagram.getUserMedia(accessToken);
+
     notifyListeners();
   }
 }
