@@ -29,7 +29,15 @@ class _WallpaperImagesState extends State<WallpaperImages> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Choose Your Best'),
+        leading: const BackButton(color: Colors.white),
+        title: const Text(
+          'Choose Your Best',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        elevation: 8,
+        backgroundColor: const Color(0xff181822),
       ),
       body: Consumer<UserState>(
         builder: (context, state, child) {
