@@ -217,7 +217,7 @@ Future<void> setWallpaper(String url, int screen) async {
   await AsyncWallpaper.setWallpaperFromFile(
     filePath: file.path,
     wallpaperLocation: screen,
-    goToHome: true,
+    goToHome: false,
     toastDetails: ToastDetails.success(),
     errorToastDetails: ToastDetails.error(),
   );

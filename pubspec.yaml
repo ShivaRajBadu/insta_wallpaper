@@ -37,15 +37,16 @@ dependencies:
   http: ^1.2.0
   flutter_cache_manager: ^3.3.1
   async_wallpaper: ^2.0.3
-  webview_flutter: ^4.4.4
   flutter_secure_storage: ^9.0.0
   flutter_easyloading: ^3.0.5
   provider: ^6.1.1
   shimmer: ^3.0.0
   fancy_shimmer_image: ^2.0.3
   workmanager: ^0.5.2
-  logger: ^2.0.2+1
-  flutter_web_auth: ^0.5.0
+
+  url_launcher: ^6.2.4
+  receive_intent: ^0.2.5
+  flutter_animate: ^4.4.0
 
   # flutter_insta: ^1.0.1
 

@@ -26,4 +26,9 @@ class UserState extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  void logout() {
+    _accessToken = null;
+    notifyListeners();
+  }
 }
