@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart' hide Intent;
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:insta_wallpaper/screens/home_page.dart';
 import 'package:insta_wallpaper/state_manager/global_state.dart';
@@ -13,6 +14,10 @@ final userState = UserState();
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: const Color(0xffd62976).withOpacity(0.2),
+    statusBarIconBrightness: Brightness.light,
+  ));
   runApp(const MainApp());
 }
 
@@ -29,6 +34,7 @@ class _MainAppState extends State<MainApp> {
   @override
   void initState() {
     _initializeReceiveIntent();
+
     super.initState();
   }
 

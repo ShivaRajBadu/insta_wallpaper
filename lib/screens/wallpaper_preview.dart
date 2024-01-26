@@ -1,7 +1,4 @@
-import 'package:async_wallpaper/async_wallpaper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class WallpaperPreviewScreen extends StatelessWidget {
   final String mediaUrl;
