@@ -24,8 +24,7 @@ class IntentUtils {
     final lastText = splittedData[splittedData.length - 1];
     try {
       if (secondLastText == "code") {
-        print('get code');
-        EasyLoading.show();
+        EasyLoading.show(status: 'Getting your photos...');
         beforeNavigation();
         Instagram.getAuthorizationCode(lastText);
         await Instagram.getTokenAndUserID();

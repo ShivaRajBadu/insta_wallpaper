@@ -32,7 +32,7 @@ class WallpaperPreviewScreen extends StatelessWidget {
             const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
-                setWallpaper(mediaUrl, screenNumber);
+                // setWallpaper(mediaUrl, screenNumber);
               },
               child: const Text('Set Wallpaper'),
             ),
@@ -41,18 +41,4 @@ class WallpaperPreviewScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-Future<void> setWallpaper(String url, int screen) async {
-  EasyLoading.show();
-  var file = await DefaultCacheManager().getSingleFile(url);
-
-  await AsyncWallpaper.setWallpaperFromFile(
-    filePath: file.path,
-    wallpaperLocation: screen,
-    goToHome: false,
-    toastDetails: ToastDetails.success(),
-    errorToastDetails: ToastDetails.error(),
-  );
-  EasyLoading.dismiss();
 }
