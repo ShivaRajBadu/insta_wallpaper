@@ -1,5 +1,5 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:insta_wallpaper/screens/wallpaper_page.dart';
+import 'package:insta_wallpaper/screens/wallpaper_images.dart';
 import 'package:insta_wallpaper/utils/instagram.dart';
 import 'package:insta_wallpaper/widgets/custom_page_route.dart';
 import 'package:receive_intent/receive_intent.dart';
@@ -33,7 +33,7 @@ class IntentUtils {
         EasyLoading.dismiss();
         navigator?.push(
           CustomPageRoute(
-            child: const WallpaperApp(),
+            child: const WallpaperImages(),
           ),
         );
         afterReturned();

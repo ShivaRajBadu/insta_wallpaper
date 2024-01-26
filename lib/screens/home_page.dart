@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:insta_wallpaper/screens/wallpaper_page.dart';
+import 'package:insta_wallpaper/screens/wallpaper_images.dart';
 import 'package:insta_wallpaper/state_manager/user_state.dart';
 import 'package:insta_wallpaper/utils/constants.dart';
 import 'package:insta_wallpaper/utils/instagram.dart';
@@ -144,12 +144,11 @@ class _HomePageState extends State<HomePage> {
                                     Navigator.push(
                                         context,
                                         CustomPageRoute(
-                                          child: const WallpaperApp(),
+                                          child: const WallpaperImages(),
                                         ));
                                   },
                                   child: Text('Check my photos'),
                                 ),
-                                const Spacer(),
                                 if (state.accessToken != null &&
                                     state.accessToken!.isNotEmpty)
                                   ElevatedButton(

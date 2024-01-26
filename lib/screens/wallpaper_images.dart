@@ -1,22 +1,22 @@
 import 'dart:async';
 import 'package:async_wallpaper/async_wallpaper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:insta_wallpaper/main.dart';
+import 'package:insta_wallpaper/screens/wallpaper_preview.dart';
 import 'package:insta_wallpaper/state_manager/user_state.dart';
+import 'package:insta_wallpaper/widgets/custom_page_route.dart';
 import 'package:insta_wallpaper/widgets/wallpaper/Image_with_shimmer.dart';
 import 'package:insta_wallpaper/widgets/wallpaper/grid_shimmer.dart';
 import 'package:provider/provider.dart';
 
-class WallpaperApp extends StatefulWidget {
-  const WallpaperApp({super.key});
+class WallpaperImages extends StatefulWidget {
+  const WallpaperImages({super.key});
 
   @override
-  State<WallpaperApp> createState() => _WallpaperAppState();
+  State<WallpaperImages> createState() => _WallpaperImagesState();
 }
 
-class _WallpaperAppState extends State<WallpaperApp> {
+class _WallpaperImagesState extends State<WallpaperImages> {
   int currentImageIndex = 0;
 
   @override
@@ -182,11 +182,39 @@ class WallpaperScreenWidget extends StatelessWidget {
     return InkWell(
       onTap: () {
         if (text == 'Home screen') {
-          setWallpaper(mediaUrl, AsyncWallpaper.HOME_SCREEN);
+          Navigator.push(
+            context,
+            CustomPageRoute(
+              child: WallpaperPreviewScreen(
+                mediaUrl: mediaUrl,
+                screenNumber: AsyncWallpaper.HOME_SCREEN,
+              ),
+            ),
+          );
+
+          // setWallpaper(mediaUrl, AsyncWallpaper.HOME_SCREEN);
         } else if (text == 'Lock screen') {
-          setWallpaper(mediaUrl, AsyncWallpaper.LOCK_SCREEN);
+          Navigator.push(
+            context,
+            CustomPageRoute(
+              child: WallpaperPreviewScreen(
+                mediaUrl: mediaUrl,
+                screenNumber: AsyncWallpaper.LOCK_SCREEN,
+              ),
+            ),
+          );
+          // setWallpaper(mediaUrl, AsyncWallpaper.LOCK_SCREEN);
         } else if (text == 'Home and lock screens') {
-          setWallpaper(mediaUrl, AsyncWallpaper.BOTH_SCREENS);
+          Navigator.push(
+            context,
+            CustomPageRoute(
+              child: WallpaperPreviewScreen(
+                mediaUrl: mediaUrl,
+                screenNumber: AsyncWallpaper.BOTH_SCREENS,
+              ),
+            ),
+          );
+          // setWallpaper(mediaUrl, AsyncWallpaper.BOTH_SCREENS);
         }
         Navigator.pop(context);
       },
@@ -208,18 +236,4 @@ class WallpaperScreenWidget extends StatelessWidget {
       ),
     );
   }
-}
-
-Future<void> setWallpaper(String url, int screen) async {
-  EasyLoading.show();
-  var file = await DefaultCacheManager().getSingleFile(url);
-
-  await AsyncWallpaper.setWallpaperFromFile(
-    filePath: file.path,
-    wallpaperLocation: screen,
-    goToHome: false,
-    toastDetails: ToastDetails.success(),
-    errorToastDetails: ToastDetails.error(),
-  );
-  EasyLoading.dismiss();
 }
