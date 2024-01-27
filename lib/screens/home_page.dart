@@ -38,24 +38,26 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Column(
-        children: [
-          Header(),
-          Expanded(
-            child: Stack(
-              children: [
-                BackgroundGradient(),
-                Center(
-                  child: UserInfoSection(),
-                ),
-                // Center(
-                //   child: MobileFrame(),
-                // ),
-              ],
+    return const SafeArea(
+      child: Scaffold(
+        body: Column(
+          children: [
+            Header(),
+            Expanded(
+              child: Stack(
+                children: [
+                  BackgroundGradient(),
+                  Center(
+                    child: UserInfoSection(),
+                  ),
+                  // Center(
+                  //   child: MobileFrame(),
+                  // ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -67,7 +69,7 @@ class Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 5),
+      padding: const EdgeInsets.only(left: 10, right: 10, top: 15, bottom: 15),
       decoration: const BoxDecoration(color: Color(0xff181822), boxShadow: [
         BoxShadow(
           color: Colors.green,
@@ -269,107 +271,117 @@ class UserInfoAuthenticated extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: Instagram.getUserDetails(accessToken),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (snapshot.hasError) {
-          return const Center(
-            child: Text('Something went wrong'),
-          );
-        } else {
-          return Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Hi !',
-                    style: TextStyle(
-                      fontSize: 35,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              SizedBox(
-                width: ScreenDetails.proportionateOfWidth(context, 0.4),
-                child: AnimatedTextKit(
-                  pause: const Duration(microseconds: 400),
-                  repeatForever: true,
-                  isRepeatingAnimation: true,
-                  animatedTexts: [
-                    ColorizeAnimatedText(
-                      snapshot.data?['username'],
-                      textStyle: const TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 24,
-                        color: Color(0xffd62976),
-                      ),
-                      speed: const Duration(seconds: 1),
-                      colors: colorizeColors,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Text(
-                'Ready to change your wallpaper',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey.shade300,
-                ),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: const MaterialStatePropertyAll<Color>(
-                    Colors.transparent,
-                  ),
-                  shape: MaterialStatePropertyAll(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      side: const BorderSide(
+    if (accessToken.isEmpty) {
+      return const SizedBox.shrink();
+    } else {
+      return FutureBuilder(
+        future: Instagram.getUserDetails(accessToken),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.data == null) {
+            return const Center(
+              child: Text('Something went wrong'),
+            );
+          } else if (snapshot.hasError) {
+            return const Center(
+              child: Text('Something went wrong'),
+            );
+          } else {
+            print(accessToken);
+            print(snapshot.data);
+            return Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Hi !',
+                      style: TextStyle(
+                        fontSize: 35,
+                        fontWeight: FontWeight.w600,
                         color: Colors.white,
                       ),
                     ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  width: ScreenDetails.proportionateOfWidth(context, 0.4),
+                  child: AnimatedTextKit(
+                    pause: const Duration(microseconds: 400),
+                    repeatForever: true,
+                    isRepeatingAnimation: true,
+                    animatedTexts: [
+                      ColorizeAnimatedText(
+                        " snapshot.data?['username']",
+                        textStyle: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 24,
+                          color: Color(0xffd62976),
+                        ),
+                        speed: const Duration(seconds: 1),
+                        colors: colorizeColors,
+                      ),
+                    ],
                   ),
                 ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    CustomPageRoute(
-                      child: const WallpaperImages(),
-                    ),
-                  );
-                },
-                child: const Text(
-                  'Check my photos',
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  'Ready to change your wallpaper',
                   style: TextStyle(
-                    color: Color(0xfffff8ff),
-                    fontSize: 14,
+                    fontSize: 12,
+                    color: Colors.grey.shade300,
                   ),
                 ),
-              ),
-            ],
-          );
-        }
-      },
-    );
+                const SizedBox(
+                  height: 5,
+                ),
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: const MaterialStatePropertyAll<Color>(
+                      Colors.transparent,
+                    ),
+                    shape: MaterialStatePropertyAll(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        side: const BorderSide(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      CustomPageRoute(
+                        child: const WallpaperImages(),
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    'Check my photos',
+                    style: TextStyle(
+                      color: Color(0xfffff8ff),
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+        },
+      );
+    }
   }
 }
 

@@ -52,18 +52,20 @@ class Instagram {
 
   static Future<Map<String, dynamic>> getUserDetails(String token) async {
     final apiUrl =
-        'https://graph.instagram.com/me?fields=id,username,followers_count,account_type,follows_count,media_count&access_token=$token';
+        'https://graph.instagram.com/me?fields=id,username&access_token=$token';
     final response = await http.get(Uri.parse(apiUrl));
+    print('user data is ${response.body}');
     return json.decode(response.body);
   }
 
   static Future<List<Map<String, dynamic>>> getUserMedia(String? token) async {
     final apiUrl =
-        'https://graph.instagram.com/v13.0/me/media?fields=id,media_type,media_url,thumbnail_url&access_token=$token';
+        'https://graph.instagram.com/v13.0/me/media?fields=id,caption,media_type,media_url,thumbnail_url&access_token=$token';
 
     final response = await http.get(Uri.parse(apiUrl));
 
     final jsonData = json.decode(response.body);
+    print('user media is ${response.body}');
     // filter data by media_type = "IMAGE"
     final List<Map<String, dynamic>> mediaList = filterMediaList(jsonData);
 
